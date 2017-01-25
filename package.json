@@ -1,0 +1,33 @@
+{
+  "name": "@arpinum/log",
+  "version": "0.0.1",
+  "description": "Simple module to log on stdout or stderr",
+  "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "eslint": "./node_modules/.bin/eslint .",
+    "mocha": "./node_modules/.bin/mocha lib",
+    "test": "npm run mocha; code=$?; npm run eslint; exit $((${code}+$?))",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags && npm publish"
+  },
+  "author": "Arpinum",
+  "license": "MIT",
+  "repository": "arpinum-js-engine/js-engine-log.git",
+  "keywords": [
+    "log",
+    "logger",
+    "console",
+    "12 factor",
+    "Arpinum"
+  ],
+  "devDependencies": {
+    "chai": "3.5.0",
+    "eslint": "3.14.1",
+    "eslint-config-arpinum": "3.0.4",
+    "mocha": "3.2.0",
+    "sinon": "^1.17.7"
+  }
+}
