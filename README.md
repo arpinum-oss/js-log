@@ -40,9 +40,9 @@ Available methods are:
 You can create a fine tuned logger:
 
 ```javascript
-const {createLogger, levels} = require('@arpinum/log');
+const {Logger, levels} = require('@arpinum/log');
 
-let logger = createLogger({level: levels.error});
+let logger = Logger({level: levels.error});
 logger.info('Something happened');
 logger.error('Some error');
 ```
@@ -71,9 +71,9 @@ You can pass those options during logger creation:
 File name usage:
 
 ```javascript
-const {createLogger} = require('@arpinum/log');
+const {Logger} = require('@arpinum/log');
 
-const logger = createLogger({fileName: __filename});
+const logger = Logger({fileName: __filename});
 logger.info('Something happened');  
 ```
 Which outputs :
