@@ -42,7 +42,7 @@ You can create a fine tuned logger:
 ```javascript
 const {Logger, levels} = require('@arpinum/log');
 
-let logger = Logger({level: levels.error});
+let logger = new Logger({level: levels.error});
 logger.info('Something happened');
 logger.error('Some error');
 ```
@@ -73,7 +73,7 @@ File name usage:
 ```javascript
 const {Logger} = require('@arpinum/log');
 
-const logger = Logger({fileName: __filename});
+const logger = new Logger({fileName: __filename});
 logger.info('Something happened');  
 ```
 Which outputs :
