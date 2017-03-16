@@ -25,12 +25,13 @@
   ],
   "devDependencies": {
     "chai": "3.5.0",
-    "eslint": "3.15.0",
+    "eslint": "3.17.1",
     "eslint-config-arpinum": "3.0.4",
     "mocha": "3.2.0",
-    "sinon": "1.17.7"
+    "sinon": "1.17.7",
+    "sinon-chai": "2.8.0"
   },
   "dependencies": {
-    "tcomb": "3.2.16"
+    "tcomb": "3.2.20"
   }
 }
