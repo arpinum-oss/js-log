@@ -28,8 +28,7 @@
     "eslint": "3.17.1",
     "eslint-config-arpinum": "3.0.4",
     "mocha": "3.2.0",
-    "sinon": "1.17.7",
-    "sinon-chai": "2.8.0"
+    "sinon": "1.17.7"
   },
   "dependencies": {
     "tcomb": "3.2.20"

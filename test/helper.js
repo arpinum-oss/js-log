@@ -1,3 +1,1 @@
-require('chai')
-  .use(require('sinon-chai'))
-  .should();
+require('chai').should();
