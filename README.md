@@ -60,12 +60,38 @@ You can pass those options during logger creation:
 * level
   * minimum logging level amongst `all`, `trace`, `debug`, `info`, `warn`, `error`, `off`
   * default is `info`
+  * `LOG_LEVEL` env var may be used to set level
 * category
   * the category displayed in message, useful to filter logs
   * default is `default`
 * fileName
   * a category can be created from a base name without extension of a file
+* filter
+  * a regex to filter matching categories
+  * default is `.*` (open bar)
+  * `LOG_FILTER` env var may be used to set filter
   
+### Filtering logs
+
+If you have multiple logger instances with various categories, you can filter logs using `filter` options or `LOG_FILTER` env var.   
+
+Example:
+
+```
+// program.js
+const mainLogger = new Logger({category: 'main'});
+const serviceLogger = new Logger({category: 'service'});
+
+mainLogger.info('Application started');
+serviceLogger.info('Doing some stuff');
+```
+
+May be run with `LOG_FILTER=serv node program.js` to output:
+
+```
+2017-01-30T09:32:31.351Z - info: [service] Doing some stuff
+```
+
 ### Examples:
 
 File name usage:
