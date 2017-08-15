@@ -108,6 +108,10 @@ Which outputs :
 2017-01-30T09:32:31.351Z - info: [MySuperClass] Something happened
 ```
 
+## Type checking with tcomb
+
+The module exports a `LoggerContract` to use with [tcomb](https://github.com/gcanti/tcomb).
+
 ## License
 
 [MIT](LICENSE)
