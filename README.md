@@ -40,9 +40,9 @@ Available methods are:
 You can create a fine tuned logger:
 
 ```javascript
-const {Logger, levels} = require('@arpinum/log');
+const {createLogger, levels} = require('@arpinum/log');
 
-let logger = new Logger({level: levels.error});
+const logger = createLogger({level: levels.error});
 logger.info('Something happened');
 logger.error('Some error');
 ```
@@ -79,8 +79,8 @@ Example:
 
 ```
 // program.js
-const mainLogger = new Logger({category: 'main'});
-const serviceLogger = new Logger({category: 'service'});
+const mainLogger = createLogger({category: 'main'});
+const serviceLogger = createLogger({category: 'service'});
 
 mainLogger.info('Application started');
 serviceLogger.info('Doing some stuff');
@@ -97,11 +97,12 @@ May be run with `LOG_FILTER=serv node program.js` to output:
 File name usage:
 
 ```javascript
-const {Logger} = require('@arpinum/log');
+const {createLogger} = require('@arpinum/log');
 
-const logger = new Logger({fileName: __filename});
+const logger = createLogger({fileName: __filename});
 logger.info('Something happened');  
 ```
+
 Which outputs :
 
 ```

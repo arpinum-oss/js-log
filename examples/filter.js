@@ -2,11 +2,11 @@
 
 // run with: LOG_FILTER=serv node filter.js
 
-const {Logger} = require('../lib');
+const {createLogger} = require('../lib');
 
-const mainLogger = new Logger({category: 'main'});
-const serviceLogger = new Logger({category: 'service'});
-const uiLogger = new Logger({category: 'ui'});
+const mainLogger = createLogger({category: 'main'});
+const serviceLogger = createLogger({category: 'service'});
+const uiLogger = createLogger({category: 'ui'});
 
 mainLogger.info('Application started');
 mainLogger.info('Creating service');
