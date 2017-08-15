@@ -1,6 +1,6 @@
 {
   "name": "@arpinum/log",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Simple module to log on stdout or stderr",
   "main": "./lib/index.js",
   "files": [
