@@ -29,7 +29,6 @@ Which outputs :
 
 Available methods are:
 
-* trace
 * debug
 * info
 * warn
@@ -40,9 +39,9 @@ Available methods are:
 You can create a fine tuned logger:
 
 ```javascript
-const {createLogger, levels} = require('@arpinum/log');
+const {createLogger} = require('@arpinum/log');
 
-const logger = createLogger({level: levels.error});
+const logger = createLogger({level: 'error'});
 logger.info('Something happened');
 logger.error('Some error');
 ```
@@ -58,7 +57,7 @@ Which outputs :
 You can pass those options during logger creation:
 
 * level
-  * minimum logging level amongst `all`, `trace`, `debug`, `info`, `warn`, `error`, `off`
+  * minimum logging level amongst `all`, `debug`, `info`, `warn`, `error`, `off`
   * default is `info`
   * `LOG_LEVEL` env var may be used to set level
 * category
