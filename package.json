@@ -15,7 +15,7 @@
   },
   "author": "Arpinum",
   "license": "MIT",
-  "repository": "arpinum-js-engine/js-log.git",
+  "repository": "arpinum-oss/js-log.git",
   "keywords": [
     "log",
     "logger",
