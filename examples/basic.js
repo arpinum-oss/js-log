@@ -1,6 +1,6 @@
 'use strict';
 
-const {logger} = require('../lib');
+const { logger } = require('../lib');
 
 logger.info('Hello world');
 
