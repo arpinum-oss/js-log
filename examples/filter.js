@@ -2,7 +2,7 @@
 
 // run with: LOG_FILTER=serv node filter.js
 
-const { createLogger } = require('../lib');
+const { createLogger } = require('../build');
 
 const mainLogger = createLogger({ category: 'main' });
 const serviceLogger = createLogger({ category: 'service' });

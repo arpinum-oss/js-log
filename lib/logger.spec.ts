@@ -1,8 +1,11 @@
-'use strict';
+import * as sinon from 'sinon';
+import * as t from 'tcomb';
 
-const sinon = require('sinon');
-const { LoggerContract } = require('./contracts')(require('tcomb'));
-const createLogger = require('./logger');
+import { contracts } from './contracts';
+import { Console } from './console';
+import { createLogger, Options } from './logger';
+
+const { LoggerContract } = contracts(t);
 
 describe('Logger', () => {
   let consoleSpy;
@@ -18,7 +21,7 @@ describe('Logger', () => {
   it('should match LoggerContract', () => {
     const logger = create();
 
-    LoggerContract.is(logger).should.be.true;
+    expect((LoggerContract as any).is(logger)).toBeTruthy();
   });
 
   it('should log with console.log for debug level', () => {
@@ -111,57 +114,57 @@ describe('Logger', () => {
   });
 
   it("won't be created with level not a string", () => {
-    const creation = () => create({ level: 3 });
+    const creation = () => create({ level: 3 as any });
 
-    creation.should.throw(Error, 'level must be a string');
+    expect(creation).toThrow('level must be a string');
   });
 
   it("won't be created with unknown log level", () => {
     const creation = () => create({ level: 'unknown' });
 
-    creation.should.throw(Error, 'level unknown is invalid');
+    expect(creation).toThrow('level unknown is invalid');
   });
 
   it("won't be created with category not a string", () => {
-    const creation = () => create({ category: 3 });
+    const creation = () => create({ category: 3 as any });
 
-    creation.should.throw(Error, 'category must be a string');
+    expect(creation).toThrow('category must be a string');
   });
 
   it("won't be created with filter not a string", () => {
-    const creation = () => create({ filter: 3 });
+    const creation = () => create({ filter: 3 as any });
 
-    creation.should.throw(Error, 'filter must be a string');
+    expect(creation).toThrow('filter must be a string');
   });
 
   it("won't be created with fileName not a string", () => {
-    const creation = () => create({ fileName: 3 });
+    const creation = () => create({ fileName: 3 as any });
 
-    creation.should.throw(Error, 'fileName must be a string');
+    expect(creation).toThrow('fileName must be a string');
   });
 
   it("won't be created with console having log property not a function", () => {
     const creation = () =>
       create({ console: Object.assign({}, consoleSpy, { log: 3 }) });
 
-    creation.should.throw(Error, 'console#log must be a function');
+    expect(creation).toThrow('console#log must be a function');
   });
 
   it("won't be created with console having warn property not a function", () => {
     const creation = () =>
       create({ console: Object.assign({}, consoleSpy, { warn: 3 }) });
 
-    creation.should.throw(Error, 'console#warn must be a function');
+    expect(creation).toThrow('console#warn must be a function');
   });
 
   it("won't be created with console having error property not a function", () => {
     const creation = () =>
       create({ console: Object.assign({}, consoleSpy, { error: 3 }) });
 
-    creation.should.throw(Error, 'console#error must be a function');
+    expect(creation).toThrow('console#error must be a function');
   });
 
-  function create(options) {
+  function create(options: Options = {}) {
     const _options = Object.assign(
       {
         level: 'all',
@@ -174,11 +177,11 @@ describe('Logger', () => {
 
   function assertLoggedWithLevelAndMessage(level, message) {
     sinon.assert.called(consoleSpy[level]);
-    consoleSpy[level].lastCall.args[1].should.equal(message);
+    expect(consoleSpy[level].lastCall.args[1]).toEqual(message);
   }
 
   function assertLoggedPrefixIncludes(prefix) {
     sinon.assert.called(consoleSpy.log);
-    consoleSpy.log.lastCall.args[0].should.includes(prefix);
+    expect(consoleSpy.log.lastCall.args[0]).toContain(prefix);
   }
 });

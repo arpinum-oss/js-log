@@ -1,4 +1,4 @@
-function contracts(t) {
+export function contracts(t: any) {
   const LoggerContract = t.interface(
     {
       debug: t.Function,
@@ -13,5 +13,3 @@ function contracts(t) {
     LoggerContract
   };
 }
-
-module.exports = contracts;

@@ -1,6 +1,17 @@
-'use strict';
+import { Console, ConsoleOut } from './console';
 
-const levels = {
+export type Priority = 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface Level {
+  priority: Priority;
+  log?: (console: Console) => ConsoleOut;
+}
+
+export interface Levels {
+  [key: string]: Level;
+}
+
+export const levels: Levels = {
   all: {
     priority: 1
   },
@@ -24,5 +35,3 @@ const levels = {
     priority: 6
   }
 };
-
-module.exports = levels;

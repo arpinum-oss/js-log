@@ -2,16 +2,21 @@
   "name": "@arpinum/log",
   "version": "4.0.0",
   "description": "Simple module to log on stdout or stderr",
-  "main": "./lib/index.js",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
-    "lib"
+    "build"
   ],
   "scripts": {
-    "eslint": "./node_modules/.bin/eslint .",
-    "mocha": "./node_modules/.bin/mocha lib",
-    "test": "npm run mocha; code=$?; npm run eslint; exit $((${code}+$?))",
-    "prettier": "prettier --write \"**/*.js\"",
-    "preversion": "npm test",
+    "tslint": "tslint --fix lib/**/*.ts",
+    "jest": "jest",
+    "testw": "jest --watch",
+    "prettier": "prettier --write \"**/*.ts\"",
+    "compile": "tsc --noEmit",
+    "test": "run-s -c compile jest tslint",
+    "prebuild": "rm -rf ./build",
+    "build": "tsc",
+    "preversion": "run-s test build",
     "postversion": "git push && git push --tags && npm publish"
   },
   "author": "Arpinum",
@@ -25,12 +30,30 @@
     "Arpinum"
   ],
   "devDependencies": {
-    "chai": "4.1.2",
-    "eslint": "4.11.0",
-    "eslint-config-arpinum": "5.0.0",
-    "mocha": "4.0.1",
-    "prettier": "1.8.2",
+    "@types/jest": "21.1.8",
+    "@types/node": "8.5.1",
+    "@types/sinon": "4.1.2",
+    "jest": "21.2.1",
+    "npm-run-all": "4.1.2",
+    "prettier": "1.9.2",
     "sinon": "4.1.2",
-    "tcomb": "3.2.24"
+    "tcomb": "3.2.24",
+    "ts-jest": "21.2.4",
+    "ts-node": "4.0.2",
+    "tslint": "5.8.0",
+    "tslint-config-prettier": "1.6.0",
+    "typescript": "2.6.2"
+  },
+  "jest": {
+    "transform": {
+      ".ts": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "mapCoverage": true,
+    "testRegex": "/lib/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ]
   }
 }

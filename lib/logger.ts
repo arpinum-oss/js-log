@@ -1,7 +1,22 @@
-'use strict';
+import { basename } from './basename';
+import { ConsoleOut } from './console';
+import { levels } from './levels';
 
-const path = require('path');
-const levels = require('./levels');
+export interface Options {
+  level?: string;
+  category?: string;
+  fileName?: string;
+  filter?: string;
+  console?: Console;
+}
+
+interface ProcessEnv {
+  [key: string]: string | undefined;
+}
+
+declare var process: {
+  env: ProcessEnv;
+};
 
 const defaultOptions = {
   level: process.env.LOG_LEVEL || 'info',
@@ -10,7 +25,14 @@ const defaultOptions = {
   console
 };
 
-function createLogger(options = {}) {
+export interface Logger {
+  debug: ConsoleOut;
+  info: ConsoleOut;
+  warn: ConsoleOut;
+  error: ConsoleOut;
+}
+
+export function createLogger(options: Options = {}): Logger {
   validateArgs();
   const _options = buildOptions();
   const configuredLevel = levels[_options.level];
@@ -66,7 +88,7 @@ function createLogger(options = {}) {
       return {};
     }
     return {
-      category: path.basename(options.fileName, path.extname(options.fileName))
+      category: basename(options.fileName)
     };
   }
 
@@ -78,31 +100,28 @@ function createLogger(options = {}) {
     return Object.keys(levels).reduce(levelReducer, {});
   }
 
-  function levelReducer(result, level) {
+  function levelReducer(result: any, level: string) {
     return Object.assign(
       result,
       levels[level].log ? { [level]: createLoggingFunction(level) } : {}
     );
   }
 
-  function createLoggingFunction(levelKey) {
+  function createLoggingFunction(levelKey: string) {
     const level = levels[levelKey];
     if (configuredLevel.priority <= level.priority && allowedToLog) {
       const logFunction = level.log(_options.console);
-      return (...args) => {
+      return (...args: any[]) =>
         logFunction(`${date()} - ${levelKey}: [${_options.category}]`, ...args);
-      };
     }
-    return () => undefined;
+    return (..._args: any[]) => {};
   }
 
   function date() {
     return new Date().toISOString();
   }
 
-  function notA(value, type) {
+  function notA(value: any, type: string) {
     return value === null || typeof value !== type;
   }
 }
-
-module.exports = createLogger;
