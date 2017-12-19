@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
 import * as t from 'tcomb';
 
-import { contracts } from './contracts';
 import { Console } from './console';
+import { contracts } from './contracts';
 import { createLogger, Options } from './logger';
 
 const { LoggerContract } = contracts(t);
@@ -165,14 +165,15 @@ describe('Logger', () => {
   });
 
   function create(options: Options = {}) {
-    const _options = Object.assign(
-      {
-        level: 'all',
-        console: consoleSpy
-      },
-      options
+    return createLogger(
+      Object.assign(
+        {
+          level: 'all',
+          console: consoleSpy
+        },
+        options
+      )
     );
-    return createLogger(_options);
   }
 
   function assertLoggedWithLevelAndMessage(level, message) {

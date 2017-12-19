@@ -34,8 +34,8 @@ export interface Logger {
 
 export function createLogger(options: Options = {}): Logger {
   validateArgs();
-  const _options = buildOptions();
-  const configuredLevel = levels[_options.level];
+  const theOptions = buildOptions();
+  const configuredLevel = levels[theOptions.level];
   const allowedToLog = filterMatchesCategory();
   return createLoggingFunctions();
 
@@ -93,7 +93,7 @@ export function createLogger(options: Options = {}): Logger {
   }
 
   function filterMatchesCategory() {
-    return new RegExp(_options.filter).test(_options.category);
+    return new RegExp(theOptions.filter).test(theOptions.category);
   }
 
   function createLoggingFunctions() {
@@ -107,14 +107,17 @@ export function createLogger(options: Options = {}): Logger {
     );
   }
 
-  function createLoggingFunction(levelKey: string) {
+  function createLoggingFunction(levelKey: string): ConsoleOut {
     const level = levels[levelKey];
     if (configuredLevel.priority <= level.priority && allowedToLog) {
-      const logFunction = level.log(_options.console);
+      const logFunction = level.log(theOptions.console);
       return (...args: any[]) =>
-        logFunction(`${date()} - ${levelKey}: [${_options.category}]`, ...args);
+        logFunction(
+          `${date()} - ${levelKey}: [${theOptions.category}]`,
+          ...args
+        );
     }
-    return (..._args: any[]) => {};
+    return () => undefined;
   }
 
   function date() {

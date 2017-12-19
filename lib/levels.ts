@@ -1,9 +1,7 @@
 import { Console, ConsoleOut } from './console';
 
-export type Priority = 1 | 2 | 3 | 4 | 5 | 6;
-
 export interface Level {
-  priority: Priority;
+  priority: number;
   log?: (console: Console) => ConsoleOut;
 }
 
