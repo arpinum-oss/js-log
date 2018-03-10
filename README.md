@@ -7,7 +7,9 @@ _@arpinum/log_ is a simple module to log on stdout or stderr.
 
 ## Installation
 
-    npm install @arpinum/log --save
+```
+npm install @arpinum/log --save
+```
 
 ## Default logger
 
@@ -66,7 +68,6 @@ You can pass those options during logger creation:
 * fileName
   * a category can be created from a base name without extension of a file
 * filter
-
   * a regex to filter matching categories
   * default is `.*` (open bar)
   * `LOG_FILTER` env var may be used to set filter
@@ -77,10 +78,10 @@ If you have multiple logger instances with various categories, you can filter lo
 
 Example:
 
-```
+```javascript
 // program.js
-const mainLogger = createLogger({category: 'main'});
-const serviceLogger = createLogger({category: 'service'});
+const mainLogger = createLogger({ category: 'main' });
+const serviceLogger = createLogger({ category: 'service' });
 
 mainLogger.info('Application started');
 serviceLogger.info('Doing some stuff');
