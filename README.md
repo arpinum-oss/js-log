@@ -3,7 +3,7 @@
 > We are drowning in information but starved for knowledge.
 > <cite>John Naisbitt</cite>
 
-*@arpinum/log* is a simple module to log on stdout or stderr.
+_@arpinum/log_ is a simple module to log on stdout or stderr.
 
 ## Installation
 
@@ -14,7 +14,7 @@
 Just require default logger and start yelling messages:
 
 ```javascript
-const {logger} = require('@arpinum/log');
+const { logger } = require('@arpinum/log');
 
 logger.info('Something happened');
 ```
@@ -39,9 +39,9 @@ Available methods are:
 You can create a fine tuned logger:
 
 ```javascript
-const {createLogger} = require('@arpinum/log');
+const { createLogger } = require('@arpinum/log');
 
-const logger = createLogger({level: 'error'});
+const logger = createLogger({ level: 'error' });
 logger.info('Something happened');
 logger.error('Some error');
 ```
@@ -66,13 +66,14 @@ You can pass those options during logger creation:
 * fileName
   * a category can be created from a base name without extension of a file
 * filter
+
   * a regex to filter matching categories
   * default is `.*` (open bar)
   * `LOG_FILTER` env var may be used to set filter
-  
+
 ### Filtering logs
 
-If you have multiple logger instances with various categories, you can filter logs using `filter` options or `LOG_FILTER` env var.   
+If you have multiple logger instances with various categories, you can filter logs using `filter` options or `LOG_FILTER` env var.
 
 Example:
 
@@ -96,10 +97,10 @@ May be run with `LOG_FILTER=serv node program.js` to output:
 File name usage:
 
 ```javascript
-const {createLogger} = require('@arpinum/log');
+const { createLogger } = require('@arpinum/log');
 
-const logger = createLogger({fileName: __filename});
-logger.info('Something happened');  
+const logger = createLogger({ fileName: __filename });
+logger.info('Something happened');
 ```
 
 Which outputs :
@@ -120,16 +121,15 @@ Example:
 
 ```javascript
 const t = require('tcomb');
-const {contracts, logger} = require('@arpinum/log');
+const { contracts, logger } = require('@arpinum/log');
 
-const {LoggerContract} = contracts(t);
+const { LoggerContract } = contracts(t);
 
-LoggerContract.is(logger) // true
+LoggerContract.is(logger); // true
 ```
 
 ## License
 
 [MIT](LICENSE)
-
 
 [tcomb]: https://github.com/gcanti/tcomb

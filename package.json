@@ -4,14 +4,12 @@
   "description": "Simple module to log on stdout or stderr",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": [
-    "build"
-  ],
+  "files": ["build"],
   "scripts": {
     "tslint": "tslint --fix 'lib/**/*.ts'",
     "jest": "jest",
     "testw": "jest --watch",
-    "prettier": "prettier --write '**/*.ts'",
+    "prettier": "prettier --write '**/*.{js,json,md,ts}'",
     "compile": "tsc --noEmit",
     "test": "run-s -c compile jest tslint",
     "prebuild": "rm -rf ./build",
@@ -22,13 +20,7 @@
   "author": "Arpinum",
   "license": "MIT",
   "repository": "arpinum-oss/js-log.git",
-  "keywords": [
-    "log",
-    "logger",
-    "console",
-    "12 factor",
-    "Arpinum"
-  ],
+  "keywords": ["log", "logger", "console", "12 factor", "Arpinum"],
   "devDependencies": {
     "@types/jest": "21.1.8",
     "@types/sinon": "4.1.2",
@@ -49,10 +41,6 @@
     },
     "mapCoverage": true,
     "testRegex": "/lib/.*\\.spec\\.ts$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ]
+    "moduleFileExtensions": ["js", "json", "ts"]
   }
 }
