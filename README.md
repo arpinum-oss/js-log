@@ -1,6 +1,6 @@
 # @arpinum/log [![Build Status](https://travis-ci.org/arpinum-oss/js-log.svg?branch=master)](https://travis-ci.org/arpinum-oss/js-log)
 
-> We are drowning in information but starved for knowledge.
+> We are drowning in information but starved for knowledge.  
 > <cite>John Naisbitt</cite>
 
 _@arpinum/log_ is a simple module to log on stdout or stderr.
