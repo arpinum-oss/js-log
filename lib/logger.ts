@@ -1,3 +1,5 @@
+import { assert } from '@arpinum/defender';
+
 import { basename } from './basename';
 import { ConsoleOut } from './console';
 import { levels } from './levels';
@@ -40,37 +42,21 @@ export function createLogger(options: Options = {}): Logger {
   return createLoggingFunctions();
 
   function validateArgs() {
-    if (options.level !== undefined) {
-      if (notA(options.level, 'string')) {
-        throw new Error('level must be a string');
-      }
-      if (levels[options.level] === undefined) {
-        throw new Error(
-          `level ${options.level} is invalid, pick one in [${Object.keys(
-            levels
-          )}]`
-        );
-      }
+    assert(options.level, 'level').toBeAString();
+    if (options.level !== undefined && levels[options.level] === undefined) {
+      throw new Error(
+        `level ${options.level} is invalid, pick one in [${Object.keys(
+          levels
+        )}]`
+      );
     }
-    if (options.category !== undefined && notA(options.category, 'string')) {
-      throw new Error('category must be a string');
-    }
-    if (options.filter !== undefined && notA(options.filter, 'string')) {
-      throw new Error('filter must be a string');
-    }
-    if (options.fileName !== undefined && notA(options.fileName, 'string')) {
-      throw new Error('fileName must be a string');
-    }
+    assert(options.category, 'options#category').toBeAString();
+    assert(options.filter, 'options#filter').toBeAString();
+    assert(options.fileName, 'options#fileName').toBeAString();
     if (options.console !== undefined) {
-      if (notA(options.console.log, 'function')) {
-        throw new Error('console#log must be a function');
-      }
-      if (notA(options.console.warn, 'function')) {
-        throw new Error('console#warn must be a function');
-      }
-      if (notA(options.console.error, 'function')) {
-        throw new Error('console#error must be a function');
-      }
+      assert(options.console.log, 'options#console#log').toBeAFunction();
+      assert(options.console.warn, 'options#console#warn').toBeAFunction();
+      assert(options.console.error, 'options#console#error').toBeAFunction();
     }
   }
 
@@ -122,9 +108,5 @@ export function createLogger(options: Options = {}): Logger {
 
   function date() {
     return new Date().toISOString();
-  }
-
-  function notA(value: any, type: string) {
-    return value === null || typeof value !== type;
   }
 }
