@@ -4,7 +4,7 @@ import { basename } from './basename';
 import { ConsoleOut } from './console';
 import { levels } from './levels';
 
-export interface Options {
+export interface LoggerOptions {
   level?: string;
   category?: string;
   fileName?: string;
@@ -34,7 +34,7 @@ export interface Logger {
   error: ConsoleOut;
 }
 
-export function createLogger(options: Options = {}): Logger {
+export function createLogger(options: LoggerOptions = {}): Logger {
   validateArgs();
   const theOptions = buildOptions();
   const configuredLevel = levels[theOptions.level];
