@@ -2,7 +2,7 @@ import { assert } from '@arpinum/defender';
 
 import { basename } from './basename';
 import { ConsoleOut } from './console';
-import { levels, LevelName, LogFunc } from './levels';
+import { LevelName, levels, LogFunc } from './levels';
 
 export interface LoggerOptions {
   level?: LevelName;
