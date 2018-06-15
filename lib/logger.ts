@@ -2,10 +2,10 @@ import { assert } from '@arpinum/defender';
 
 import { basename } from './basename';
 import { ConsoleOut } from './console';
-import { levels } from './levels';
+import { levels, LevelName, LogFunc } from './levels';
 
 export interface LoggerOptions {
-  level?: string;
+  level?: LevelName;
   category?: string;
   fileName?: string;
   filter?: string;
@@ -83,20 +83,23 @@ export function createLogger(options: LoggerOptions = {}): Logger {
   }
 
   function createLoggingFunctions() {
-    return Object.keys(levels).reduce(levelReducer, {});
+    return (Object.keys(levels) as LevelName[]).reduce(
+      levelReducer,
+      {}
+    ) as Logger;
   }
 
-  function levelReducer(result: any, level: string) {
+  function levelReducer(result: {}, level: LevelName) {
     return Object.assign(
       result,
       levels[level].log ? { [level]: createLoggingFunction(level) } : {}
     );
   }
 
-  function createLoggingFunction(levelKey: string): ConsoleOut {
+  function createLoggingFunction(levelKey: LevelName): ConsoleOut {
     const level = levels[levelKey];
     if (configuredLevel.priority <= level.priority && allowedToLog) {
-      const logFunction = level.log(theOptions.console);
+      const logFunction = (level.log as LogFunc)(theOptions.console);
       return (...args: any[]) =>
         logFunction(
           `${date()} - ${levelKey}: [${theOptions.category}]`,

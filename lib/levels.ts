@@ -1,13 +1,22 @@
 import { Console, ConsoleOut } from './console';
 
+export type LogFunc = (console: Console) => ConsoleOut;
+
 export interface Level {
   priority: number;
-  log?: (console: Console) => ConsoleOut;
+  log?: LogFunc;
 }
 
 export interface Levels {
-  [key: string]: Level;
+  all: Level;
+  debug: Level;
+  info: Level;
+  warn: Level;
+  error: Level;
+  off: Level;
 }
+
+export type LevelName = 'all' | 'debug' | 'info' | 'warn' | 'error' | 'off';
 
 export const levels: Levels = {
   all: {
