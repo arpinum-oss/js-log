@@ -1,4 +1,4 @@
-export function basename(path: string): string {
+export function basename(path: string | null | undefined): string {
   if (!path) {
     return '';
   }

@@ -31,10 +31,10 @@ Which outputs :
 
 Available methods are:
 
-* debug
-* info
-* warn
-* error
+- debug
+- info
+- warn
+- error
 
 ## Custom logger
 
@@ -58,19 +58,19 @@ Which outputs :
 
 You can pass those options during logger creation:
 
-* level
-  * minimum logging level amongst `all`, `debug`, `info`, `warn`, `error`, `off`
-  * default is `info`
-  * `LOG_LEVEL` env var may be used to set level
-* category
-  * the category displayed in message, useful to filter logs
-  * default is `default`
-* fileName
-  * a category can be created from a base name without extension of a file
-* filter
-  * a regex to filter matching categories
-  * default is `.*` (open bar)
-  * `LOG_FILTER` env var may be used to set filter
+- level
+  - minimum logging level amongst `all`, `debug`, `info`, `warn`, `error`, `off`
+  - default is `info`
+  - `LOG_LEVEL` env var may be used to set level
+- category
+  - the category displayed in message, useful to filter logs
+  - default is `default`
+- fileName
+  - a category can be created from a base name without extension of a file
+- filter
+  - a regex to filter matching categories
+  - default is `.*` (open bar)
+  - `LOG_FILTER` env var may be used to set filter
 
 ### Filtering logs
 
@@ -114,7 +114,7 @@ Which outputs :
 
 If you use [tcomb] you can use the following interface:
 
-* `LoggerContract` Interface for logger defining public methods documented here
+- `LoggerContract` Interface for logger defining public methods documented here
 
 @arpinum/log does not depend on tcomb so you must provide it to get those types.
 

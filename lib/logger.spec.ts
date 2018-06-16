@@ -1,14 +1,14 @@
 import * as sinon from 'sinon';
 import * as t from 'tcomb';
 
-import { Console } from './console';
 import { contracts } from './contracts';
-import { createLogger, Options } from './logger';
+import { LevelName } from './levels';
+import { createLogger, LoggerOptions } from './logger';
 
 const { LoggerContract } = contracts(t);
 
 describe('Logger', () => {
-  let consoleSpy;
+  let consoleSpy: any;
 
   beforeEach(() => {
     consoleSpy = {
@@ -78,7 +78,7 @@ describe('Logger', () => {
 
     logger.info('the message');
 
-    assertLoggedPrefixIncludes(['[default]']);
+    assertLoggedPrefixIncludes('[default]');
   });
 
   it('should log prefixing the message with category based on file name', () => {
@@ -86,7 +86,7 @@ describe('Logger', () => {
 
     logger.info('the message');
 
-    assertLoggedPrefixIncludes(['[file]']);
+    assertLoggedPrefixIncludes('[file]');
   });
 
   it('should log prefixing the message with category based on provided category', () => {
@@ -94,7 +94,7 @@ describe('Logger', () => {
 
     logger.info('the message');
 
-    assertLoggedPrefixIncludes(['[custom]']);
+    assertLoggedPrefixIncludes('[custom]');
   });
 
   it('should log if provided category filter regex matches category', () => {
@@ -102,7 +102,7 @@ describe('Logger', () => {
 
     logger.info('the message');
 
-    assertLoggedPrefixIncludes(['[custom]']);
+    assertLoggedPrefixIncludes('[custom]');
   });
 
   it("won't log if provided category filter regex does not match category", () => {
@@ -120,7 +120,7 @@ describe('Logger', () => {
   });
 
   it("won't be created with unknown log level", () => {
-    const creation = () => create({ level: 'unknown' });
+    const creation = () => create({ level: 'unknown' as LevelName });
 
     expect(creation).toThrow('level unknown is invalid');
   });
@@ -164,7 +164,7 @@ describe('Logger', () => {
     expect(creation).toThrow('console#error must be a function');
   });
 
-  function create(options: Options = {}) {
+  function create(options: LoggerOptions = {}) {
     return createLogger(
       Object.assign(
         {
@@ -176,12 +176,12 @@ describe('Logger', () => {
     );
   }
 
-  function assertLoggedWithLevelAndMessage(level, message) {
+  function assertLoggedWithLevelAndMessage(level: string, message: string) {
     sinon.assert.called(consoleSpy[level]);
     expect(consoleSpy[level].lastCall.args[1]).toEqual(message);
   }
 
-  function assertLoggedPrefixIncludes(prefix) {
+  function assertLoggedPrefixIncludes(prefix: string) {
     sinon.assert.called(consoleSpy.log);
     expect(consoleSpy.log.lastCall.args[0]).toContain(prefix);
   }
