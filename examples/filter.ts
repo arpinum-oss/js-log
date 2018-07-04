@@ -1,6 +1,6 @@
 // run with: LOG_FILTER=serv ts-node filter.ts
 
-import { createLogger } from '../build';
+import { createLogger } from '../lib';
 
 const mainLogger = createLogger({ category: 'main' });
 const serviceLogger = createLogger({ category: 'service' });
