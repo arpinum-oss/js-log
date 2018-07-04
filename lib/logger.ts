@@ -34,7 +34,9 @@ export interface Logger {
   error: ConsoleOut;
 }
 
-export function createLogger(options: LoggerOptions = {}): Logger {
+export type CreateLogger = (options?: LoggerOptions) => Logger;
+
+export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   validateArgs();
   const theOptions = buildOptions();
   const configuredLevel = levels[theOptions.level];
@@ -112,4 +114,4 @@ export function createLogger(options: LoggerOptions = {}): Logger {
   function date() {
     return new Date().toISOString();
   }
-}
+};
