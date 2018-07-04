@@ -7,7 +7,7 @@ export interface Level {
   log?: LogFunc;
 }
 
-export interface Levels {
+interface Levels {
   all: Level;
   debug: Level;
   info: Level;

@@ -1,5 +1,6 @@
-export * from './logger';
 export * from './contracts';
+export * from './levels';
+export * from './logger';
 
 import { createLogger, Logger } from './logger';
 export const logger: Logger = createLogger();

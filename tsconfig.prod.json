@@ -2,13 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "./lib/**/*"
-  ],
+  "include": ["./lib/**/*"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
