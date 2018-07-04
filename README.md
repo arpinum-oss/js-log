@@ -110,27 +110,6 @@ Which outputs :
 2017-01-30T09:32:31.351Z - info: [MySuperClass] Something happened
 ```
 
-# tcomb type
-
-If you use [tcomb] you can use the following interface:
-
-- `LoggerContract` Interface for logger defining public methods documented here
-
-@arpinum/log does not depend on tcomb so you must provide it to get those types.
-
-Example:
-
-```javascript
-const t = require('tcomb');
-const { contracts, logger } = require('@arpinum/log');
-
-const { LoggerContract } = contracts(t);
-
-LoggerContract.is(logger); // true
-```
-
 ## License
 
 [MIT](LICENSE)
-
-[tcomb]: https://github.com/gcanti/tcomb

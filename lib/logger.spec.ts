@@ -1,11 +1,7 @@
 import * as sinon from 'sinon';
-import * as t from 'tcomb';
 
-import { contracts } from './contracts';
 import { LevelName } from './levels';
 import { createLogger, LoggerOptions } from './logger';
-
-const { LoggerContract } = contracts(t);
 
 describe('Logger', () => {
   let consoleSpy: any;
@@ -16,12 +12,6 @@ describe('Logger', () => {
       error: sinon.spy(),
       warn: sinon.spy()
     };
-  });
-
-  it('should match LoggerContract', () => {
-    const logger = create();
-
-    expect((LoggerContract as any).is(logger)).toBeTruthy();
   });
 
   it('should log with console.log for debug level', () => {
