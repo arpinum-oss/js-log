@@ -1,17 +1,17 @@
-import * as sinon from 'sinon';
-
 import { LevelName } from './levels';
 import { createLogger, LoggerOptions } from './logger';
 
+const ConsoleSpy = jest.fn<Console>(() => ({
+  log: jest.fn().mockReturnValue(undefined),
+  error: jest.fn().mockReturnValue(undefined),
+  warn: jest.fn().mockReturnValue(undefined)
+}));
+
 describe('Logger', () => {
-  let consoleSpy: any;
+  let consoleSpy: Console;
 
   beforeEach(() => {
-    consoleSpy = {
-      log: sinon.spy(),
-      error: sinon.spy(),
-      warn: sinon.spy()
-    };
+    consoleSpy = new ConsoleSpy();
   });
 
   it('should log with console.log for debug level', () => {
@@ -59,8 +59,8 @@ describe('Logger', () => {
 
     logger.debug('the message');
 
-    sinon.assert.notCalled(consoleSpy.log);
-    sinon.assert.notCalled(consoleSpy.error);
+    expect(consoleSpy.log).not.toHaveBeenCalled();
+    expect(consoleSpy.error).not.toHaveBeenCalled();
   });
 
   it('should log prefixing the message with default category if no category is provided', () => {
@@ -100,7 +100,7 @@ describe('Logger', () => {
 
     logger.info('the message');
 
-    sinon.assert.notCalled(consoleSpy.log);
+    expect(consoleSpy.log).not.toHaveBeenCalled();
   });
 
   it("won't be created with level not a string", () => {
@@ -167,12 +167,12 @@ describe('Logger', () => {
   }
 
   function assertLoggedWithLevelAndMessage(level: string, message: string) {
-    sinon.assert.called(consoleSpy[level]);
-    expect(consoleSpy[level].lastCall.args[1]).toEqual(message);
+    expect((consoleSpy as any)[level]).toHaveBeenCalled();
+    expect((consoleSpy as any)[level].mock.calls[0][1]).toContain(message);
   }
 
   function assertLoggedPrefixIncludes(prefix: string) {
-    sinon.assert.called(consoleSpy.log);
-    expect(consoleSpy.log.lastCall.args[0]).toContain(prefix);
+    expect(consoleSpy.log).toHaveBeenCalled();
+    expect((consoleSpy as any).log.mock.calls[0][0]).toContain(prefix);
   }
 });
