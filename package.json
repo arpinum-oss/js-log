@@ -31,7 +31,7 @@
   ],
   "devDependencies": {
     "@types/jest": "23.1.0",
-    "@types/node": "^8.10.20",
+    "@types/node": "8.10.20",
     "@types/sinon": "5.0.1",
     "jest": "23.1.0",
     "npm-run-all": "4.1.3",
