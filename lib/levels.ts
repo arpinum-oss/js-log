@@ -24,18 +24,22 @@ export const levels: Levels = {
   },
   debug: {
     priority: 2,
+    // tslint:disable-next-line:no-console
     log: console => console.log
   },
   info: {
     priority: 3,
+    // tslint:disable-next-line:no-console
     log: console => console.log
   },
   warn: {
     priority: 4,
+    // tslint:disable-next-line:no-console
     log: console => console.warn
   },
   error: {
     priority: 5,
+    // tslint:disable-next-line:no-console
     log: console => console.error
   },
   off: {
