@@ -18,6 +18,7 @@ interface Levels {
 
 export type LevelName = 'all' | 'debug' | 'info' | 'warn' | 'error' | 'off';
 
+// tslint:disable no-console
 export const levels: Levels = {
   all: {
     priority: 1
@@ -46,3 +47,4 @@ export const levels: Levels = {
     priority: 6
   }
 };
+// tslint:enable no-console
