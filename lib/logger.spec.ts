@@ -1,11 +1,14 @@
 import { LevelName } from './levels';
 import { createLogger, LoggerOptions } from './logger';
 
-const ConsoleSpy = jest.fn<Console>(() => ({
-  log: jest.fn().mockReturnValue(undefined),
-  error: jest.fn().mockReturnValue(undefined),
-  warn: jest.fn().mockReturnValue(undefined)
-}));
+const ConsoleSpy = jest.fn<Console, any>(
+  () =>
+    (({
+      log: jest.fn().mockReturnValue(undefined),
+      error: jest.fn().mockReturnValue(undefined),
+      warn: jest.fn().mockReturnValue(undefined)
+    } as any) as Console)
+);
 
 describe('Logger', () => {
   let consoleSpy: Console;
