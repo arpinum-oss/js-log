@@ -1,6 +1,9 @@
 import { createLogger, Level } from '../lib';
 
-const logger = createLogger({ level: Level.info });
+const logger = createLogger({
+  level: Level.info,
+  getDateString: null
+});
 
 logger.info('Will be displayed');
 logger.debug('Will not be displayed');

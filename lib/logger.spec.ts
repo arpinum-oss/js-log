@@ -66,6 +66,14 @@ describe('Logger', () => {
     expect(consoleSpy.error).not.toHaveBeenCalled();
   });
 
+  it('should log using get date string if provided', () => {
+    const logger = create({ getDateString: () => 'today' });
+
+    logger.info('the message');
+
+    assertLoggedPrefixIncludes('today');
+  });
+
   it('should log prefixing the message with default category if no category is provided', () => {
     const logger = create();
 
@@ -88,6 +96,34 @@ describe('Logger', () => {
     logger.info('the message');
 
     assertLoggedPrefixIncludes('[custom]');
+  });
+
+  it('should create an output with date, category, level and message', () => {
+    const logger = create({
+      getDateString: () => 'today',
+      category: 'awesome'
+    });
+
+    logger.info('the message');
+
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+      'today - info: [awesome]',
+      'the message'
+    );
+  });
+
+  it('should omit date if date provider is null', () => {
+    const logger = create({
+      getDateString: null,
+      category: 'awesome'
+    });
+
+    logger.info('the message');
+
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+      'info: [awesome]',
+      'the message'
+    );
   });
 
   it('should log if provided category filter regex matches category', () => {
@@ -163,6 +199,12 @@ describe('Logger', () => {
       create({ console: Object.assign({}, consoleSpy, { error: 3 }) });
 
     expect(creation).toThrow('console#error must be a function');
+  });
+
+  it("won't be created with getDateString not a function", () => {
+    const creation = () => create({ getDateString: 3 as any });
+
+    expect(creation).toThrow('getDateString must be a function');
   });
 
   function create(options: LoggerOptions = {}) {

@@ -71,6 +71,10 @@ You can pass those options during logger creation:
   - a regex to filter matching categories
   - default is `.*` (open bar)
   - `LOG_FILTER` env var may be used to set filter
+- getDateString
+  - a function to get a formatted date
+  - default function returns `new Date().toISOString()`
+  - provide `null` if you do not want a date at all
 
 ### Filtering logs
 

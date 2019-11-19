@@ -4,12 +4,15 @@ import { basename } from './basename';
 import { ConsoleOut } from './console';
 import { Level, LevelConfiguration, levels, LogFunc } from './levels';
 
+export type GetDateString = () => string;
+
 export interface LoggerOptions {
   level?: Level | string;
   category?: string;
   fileName?: string;
   filter?: string;
   console?: Console;
+  getDateString?: GetDateString | null;
 }
 
 interface ResolvedLoggerOptions {
@@ -17,6 +20,7 @@ interface ResolvedLoggerOptions {
   category: string;
   filter: string;
   console: Console;
+  getDateString: GetDateString | null;
 }
 
 interface ProcessEnv {
@@ -31,7 +35,8 @@ const defaultOptions = {
   level: (process.env.LOG_LEVEL as Level) || Level.info,
   category: 'default',
   filter: process.env.LOG_FILTER || '.*',
-  console
+  console,
+  getDateString: () => new Date().toISOString()
 };
 
 export interface Logger {
@@ -69,6 +74,9 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
       assert(options.console.log, 'options#console#log').toBeAFunction();
       assert(options.console.warn, 'options#console#warn').toBeAFunction();
       assert(options.console.error, 'options#console#error').toBeAFunction();
+    }
+    if (options.getDateString !== null) {
+      assert(options.getDateString, 'getDateString').toBeAFunction();
     }
   }
 
@@ -113,13 +121,12 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   ): ConsoleOut {
     if (configuredLevel.priority <= configuration.priority && allowedToLog) {
       const logFunction = (configuration.log as LogFunc)(theOptions.console);
+      const datePart = theOptions.getDateString
+        ? `${theOptions.getDateString()} - `
+        : '';
       return (...args: any[]) =>
-        logFunction(`${date()} - ${level}: [${theOptions.category}]`, ...args);
+        logFunction(`${datePart}${level}: [${theOptions.category}]`, ...args);
     }
     return () => undefined;
-  }
-
-  function date() {
-    return new Date().toISOString();
   }
 };
