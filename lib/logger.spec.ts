@@ -1,4 +1,4 @@
-import { LevelName } from './levels';
+import { Level } from './levels';
 import { createLogger, LoggerOptions } from './logger';
 
 const ConsoleSpy = jest.fn<Console, any>(
@@ -50,7 +50,7 @@ describe('Logger', () => {
   });
 
   it('should log if logger priority is greater than given one', () => {
-    const logger = create({ level: 'debug' });
+    const logger = create({ level: Level.debug });
 
     logger.error('the message');
 
@@ -58,7 +58,7 @@ describe('Logger', () => {
   });
 
   it("won't log if logger priority is smaller than given one", () => {
-    const logger = create({ level: 'error' });
+    const logger = create({ level: Level.error });
 
     logger.debug('the message');
 
@@ -106,6 +106,14 @@ describe('Logger', () => {
     expect(consoleSpy.log).not.toHaveBeenCalled();
   });
 
+  it('should log though level is provided as string', () => {
+    const logger = create({ level: 'debug' });
+
+    logger.debug('the message');
+
+    assertLoggedWithLevelAndMessage('log', 'the message');
+  });
+
   it("won't be created with level not a string", () => {
     const creation = () => create({ level: 3 as any });
 
@@ -113,7 +121,7 @@ describe('Logger', () => {
   });
 
   it("won't be created with unknown log level", () => {
-    const creation = () => create({ level: 'unknown' as LevelName });
+    const creation = () => create({ level: 'unknown' as Level });
 
     expect(creation).toThrow('level unknown is invalid');
   });
@@ -161,7 +169,7 @@ describe('Logger', () => {
     return createLogger(
       Object.assign(
         {
-          level: 'all',
+          level: Level.all,
           console: consoleSpy
         },
         options

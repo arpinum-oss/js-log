@@ -2,14 +2,21 @@ import { assert } from '@arpinum/defender';
 
 import { basename } from './basename';
 import { ConsoleOut } from './console';
-import { LevelName, levels, LogFunc } from './levels';
+import { Level, LevelConfiguration, levels, LogFunc } from './levels';
 
 export interface LoggerOptions {
-  level?: LevelName;
+  level?: Level | string;
   category?: string;
   fileName?: string;
   filter?: string;
   console?: Console;
+}
+
+interface ResolvedLoggerOptions {
+  level: Level;
+  category: string;
+  filter: string;
+  console: Console;
 }
 
 interface ProcessEnv {
@@ -21,7 +28,7 @@ declare var process: {
 };
 
 const defaultOptions = {
-  level: process.env.LOG_LEVEL || 'info',
+  level: (process.env.LOG_LEVEL as Level) || Level.info,
   category: 'default',
   filter: process.env.LOG_FILTER || '.*',
   console
@@ -45,7 +52,10 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
 
   function validateArgs() {
     assert(options.level, 'level').toBeAString();
-    if (options.level !== undefined && levels[options.level] === undefined) {
+    if (
+      options.level !== undefined &&
+      levels[options.level as Level] === undefined
+    ) {
       throw new Error(
         `level ${options.level} is invalid, pick one in [${Object.keys(
           levels
@@ -62,7 +72,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
     }
   }
 
-  function buildOptions() {
+  function buildOptions(): ResolvedLoggerOptions {
     return Object.assign(
       {},
       defaultOptions,
@@ -84,29 +94,27 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
     return new RegExp(theOptions.filter).test(theOptions.category);
   }
 
-  function createLoggingFunctions() {
-    return (Object.keys(levels) as LevelName[]).reduce(
-      levelReducer,
-      {}
-    ) as Logger;
-  }
-
-  function levelReducer(result: {}, level: LevelName) {
-    return Object.assign(
-      result,
-      levels[level].log ? { [level]: createLoggingFunction(level) } : {}
+  function createLoggingFunctions(): Logger {
+    return Object.entries(levels).reduce(
+      (result, [level, configuration]) =>
+        Object.assign(
+          result,
+          configuration.log
+            ? { [level]: createLoggingFunction(level, configuration) }
+            : {}
+        ),
+      {} as Logger
     );
   }
 
-  function createLoggingFunction(levelKey: LevelName): ConsoleOut {
-    const level = levels[levelKey];
-    if (configuredLevel.priority <= level.priority && allowedToLog) {
-      const logFunction = (level.log as LogFunc)(theOptions.console);
+  function createLoggingFunction(
+    level: string,
+    configuration: LevelConfiguration
+  ): ConsoleOut {
+    if (configuredLevel.priority <= configuration.priority && allowedToLog) {
+      const logFunction = (configuration.log as LogFunc)(theOptions.console);
       return (...args: any[]) =>
-        logFunction(
-          `${date()} - ${levelKey}: [${theOptions.category}]`,
-          ...args
-        );
+        logFunction(`${date()} - ${level}: [${theOptions.category}]`, ...args);
     }
     return () => undefined;
   }
