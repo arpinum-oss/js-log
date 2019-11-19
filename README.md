@@ -77,6 +77,10 @@ You can pass those options during logger creation:
   - a function to get a formatted date
   - default function returns `new Date().toISOString()`
   - provide `null` if you do not want a date at all
+- getLogInputs
+  - a function to get inputs given to `console` methods
+  - used to format message as you want
+  - see [Customize message](#customize-message) below
 
 ### Filtering logs
 
@@ -99,7 +103,7 @@ May be run with `LOG_FILTER=serv node program.js` to output:
 2017-01-30T09:32:31.351Z - info: [service] Doing some stuff
 ```
 
-### Examples:
+### About category:
 
 File name usage:
 
@@ -114,6 +118,30 @@ Which outputs :
 
 ```
 2017-01-30T09:32:31.351Z - info: [MySuperClass] Something happened
+```
+
+### Customize message
+
+`getLogInputs` will be called for each log with an object containing:
+
+- `date`: the current date string
+- `category`: the configured category
+- `level`: the logger level
+- `args`: all the provided args
+
+Example:
+
+```javascript
+const logger = createLogger({
+  getLogInputs: ({ date, category, level, args }) => [
+    `${date}|${category}|${level}`,
+    ...args
+  ]
+});
+
+logger.info('My', 'message');
+
+// 2019-11-19T16:45:58.419Z|default|info My message
 ```
 
 ## License

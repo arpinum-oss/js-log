@@ -143,6 +143,25 @@ describe('Logger', () => {
     );
   });
 
+  it('should create an output based on custom formatter if provided', () => {
+    const logger = create({
+      getDateString: () => 'today',
+      category: 'awesome',
+      getLogInputs: ({ date, category, level, args }) => [
+        `${date}|${category}|${level}`,
+        ...args
+      ]
+    });
+
+    logger.info('the', 'message');
+
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+      'today|awesome|info',
+      'the',
+      'message'
+    );
+  });
+
   it('should omit date if date provider is null', () => {
     const logger = create({
       getDateString: null,
@@ -236,6 +255,12 @@ describe('Logger', () => {
     const creation = () => create({ getDateString: 3 as any });
 
     expect(creation).toThrow('getDateString must be a function');
+  });
+
+  it("won't be created with getLogInputs not a function", () => {
+    const creation = () => create({ getLogInputs: 3 as any });
+
+    expect(creation).toThrow('getLogInputs must be a function');
   });
 
   function create(options: LoggerOptions = {}) {

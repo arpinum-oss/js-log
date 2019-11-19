@@ -6,6 +6,15 @@ import { Level, LevelConfiguration, levels, LogFunc } from './levels';
 
 export type GetDateString = () => string;
 
+interface CurrentLog {
+  date: string;
+  category: string;
+  level: string;
+  args: any[];
+}
+
+export type GetLogInputs = (log: CurrentLog) => any[];
+
 export interface LoggerOptions {
   level?: Level | string;
   category?: string;
@@ -13,6 +22,7 @@ export interface LoggerOptions {
   filter?: string;
   console?: Console;
   getDateString?: GetDateString | null;
+  getLogInputs?: GetLogInputs;
 }
 
 interface ResolvedLoggerOptions {
@@ -21,6 +31,7 @@ interface ResolvedLoggerOptions {
   filter: string;
   console: Console;
   getDateString: GetDateString | null;
+  getLogInputs: GetLogInputs;
 }
 
 interface ProcessEnv {
@@ -36,7 +47,8 @@ const defaultOptions = {
   category: 'default',
   filter: process.env.LOG_FILTER || '.*',
   console,
-  getDateString: () => new Date().toISOString()
+  getDateString: () => new Date().toISOString(),
+  getLogInputs: getDefaultLogInputs
 };
 
 export interface Logger {
@@ -78,6 +90,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
     if (options.getDateString !== null) {
       assert(options.getDateString, 'getDateString').toBeAFunction();
     }
+    assert(options.getLogInputs, 'getLogInputs').toBeAFunction();
   }
 
   function buildOptions(): ResolvedLoggerOptions {
@@ -121,12 +134,23 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   ): ConsoleOut {
     if (configuredLevel.priority <= configuration.priority && allowedToLog) {
       const logFunction = (configuration.log as LogFunc)(theOptions.console);
-      const datePart = theOptions.getDateString
-        ? `${theOptions.getDateString()} - `
-        : '';
-      return (...args: any[]) =>
-        logFunction(`${datePart}${level}: [${theOptions.category}]`, ...args);
+      return (...args: any[]) => {
+        const inputs = theOptions.getLogInputs({
+          date:
+            theOptions.getDateString !== null ? theOptions.getDateString() : '',
+          category: theOptions.category,
+          level,
+          args
+        });
+        logFunction(...inputs);
+      };
     }
     return () => undefined;
   }
 };
+
+function getDefaultLogInputs(log: CurrentLog): any[] {
+  const { date, category, level, args } = log;
+  const datePart = date ? `${date} - ` : '';
+  return [`${datePart}${level}: [${category}]`].concat(args);
+}
