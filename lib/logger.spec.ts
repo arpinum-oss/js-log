@@ -4,6 +4,7 @@ import { createLogger, LoggerOptions } from './logger';
 const ConsoleSpy = jest.fn<Console, any>(
   () =>
     (({
+      debug: jest.fn().mockReturnValue(undefined),
       log: jest.fn().mockReturnValue(undefined),
       error: jest.fn().mockReturnValue(undefined),
       warn: jest.fn().mockReturnValue(undefined)
@@ -17,8 +18,18 @@ describe('Logger', () => {
     consoleSpy = new ConsoleSpy();
   });
 
-  it('should log with console.log for debug level', () => {
+  it('should log with console.debug for debug level', () => {
     const logger = create();
+
+    logger.debug('the message');
+
+    assertLoggedWithLevelAndMessage('debug', 'the message');
+  });
+
+  it('should fallback to console.log if no console.debug', () => {
+    const logger = create({
+      console: Object.assign({}, consoleSpy, { debug: undefined })
+    });
 
     logger.debug('the message');
 
@@ -41,12 +52,32 @@ describe('Logger', () => {
     assertLoggedWithLevelAndMessage('warn', 'the message');
   });
 
+  it('should fallback to console.log if no console.warn', () => {
+    const logger = create({
+      console: Object.assign({}, consoleSpy, { warn: undefined })
+    });
+
+    logger.warn('the message');
+
+    assertLoggedWithLevelAndMessage('log', 'the message');
+  });
+
   it('should log with console.error for error level', () => {
     const logger = create();
 
     logger.error('the message');
 
     assertLoggedWithLevelAndMessage('error', 'the message');
+  });
+
+  it('should fallback to console.log if no console.error', () => {
+    const logger = create({
+      console: Object.assign({}, consoleSpy, { error: undefined })
+    });
+
+    logger.error('the message');
+
+    assertLoggedWithLevelAndMessage('log', 'the message');
   });
 
   it('should log if logger priority is greater than given one', () => {
@@ -143,9 +174,9 @@ describe('Logger', () => {
   });
 
   it('should log though level is provided as string', () => {
-    const logger = create({ level: 'debug' });
+    const logger = create({ level: 'info' });
 
-    logger.debug('the message');
+    logger.info('the message');
 
     assertLoggedWithLevelAndMessage('log', 'the message');
   });

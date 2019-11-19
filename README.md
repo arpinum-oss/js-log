@@ -36,6 +36,8 @@ Available methods are:
 - warn
 - error
 
+Each level uses corresponding method on `console` global object and fallback to `console.log` if missing for runtime environment.
+
 ## Custom logger
 
 You can create a fine tuned logger:
