@@ -16,9 +16,9 @@ npm install @arpinum/log --save
 Just require default logger and start yelling messages:
 
 ```javascript
-const { logger } = require('@arpinum/log');
+const { logger } = require("@arpinum/log");
 
-logger.info('Something happened');
+logger.info("Something happened");
 ```
 
 Which outputs :
@@ -43,11 +43,11 @@ Each level uses corresponding method on `console` global object and fallback to 
 You can create a fine tuned logger:
 
 ```javascript
-const { createLogger } = require('@arpinum/log');
+const { createLogger } = require("@arpinum/log");
 
-const logger = createLogger({ level: 'error' });
-logger.info('Something happened');
-logger.error('Some error');
+const logger = createLogger({ level: "error" });
+logger.info("Something happened");
+logger.error("Some error");
 ```
 
 Which outputs :
@@ -90,11 +90,11 @@ Example:
 
 ```javascript
 // program.js
-const mainLogger = createLogger({ category: 'main' });
-const serviceLogger = createLogger({ category: 'service' });
+const mainLogger = createLogger({ category: "main" });
+const serviceLogger = createLogger({ category: "service" });
 
-mainLogger.info('Application started');
-serviceLogger.info('Doing some stuff');
+mainLogger.info("Application started");
+serviceLogger.info("Doing some stuff");
 ```
 
 May be run with `LOG_FILTER=serv node program.js` to output:
@@ -108,10 +108,10 @@ May be run with `LOG_FILTER=serv node program.js` to output:
 File name usage:
 
 ```javascript
-const { createLogger } = require('@arpinum/log');
+const { createLogger } = require("@arpinum/log");
 
 const logger = createLogger({ fileName: __filename });
-logger.info('Something happened');
+logger.info("Something happened");
 ```
 
 Which outputs :
@@ -135,11 +135,11 @@ Example:
 const logger = createLogger({
   getLogInputs: ({ date, category, level, args }) => [
     `${date}|${category}|${level}`,
-    ...args
-  ]
+    ...args,
+  ],
 });
 
-logger.info('My', 'message');
+logger.info("My", "message");
 
 // 2019-11-19T16:45:58.419Z|default|info My message
 ```

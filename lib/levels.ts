@@ -1,4 +1,4 @@
-import { Console, ConsoleOut } from './console';
+import { Console, ConsoleOut } from "./console";
 
 export type LogFunc = (console: Console) => ConsoleOut;
 
@@ -7,12 +7,12 @@ export type Levels = {
 };
 
 export enum Level {
-  all = 'all',
-  debug = 'debug',
-  info = 'info',
-  warn = 'warn',
-  error = 'error',
-  off = 'off'
+  all = "all",
+  debug = "debug",
+  info = "info",
+  warn = "warn",
+  error = "error",
+  off = "off",
 }
 
 export interface LevelConfiguration {
@@ -23,30 +23,30 @@ export interface LevelConfiguration {
 // tslint:disable no-console
 export const levels: Levels = {
   [Level.all]: {
-    priority: 1
+    priority: 1,
   },
   [Level.debug]: {
     priority: 2,
     // tslint:disable-next-line:no-console
-    log: console => console.debug || console.log
+    log: (console) => console.debug || console.log,
   },
   [Level.info]: {
     priority: 3,
     // tslint:disable-next-line:no-console
-    log: console => console.log
+    log: (console) => console.log,
   },
   [Level.warn]: {
     priority: 4,
     // tslint:disable-next-line:no-console
-    log: console => console.warn || console.log
+    log: (console) => console.warn || console.log,
   },
   [Level.error]: {
     priority: 5,
     // tslint:disable-next-line:no-console
-    log: console => console.error || console.log
+    log: (console) => console.error || console.log,
   },
   off: {
-    priority: 6
-  }
+    priority: 6,
+  },
 };
 // tslint:enable no-console

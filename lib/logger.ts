@@ -1,8 +1,8 @@
-import { assert } from '@arpinum/defender';
+import { assert } from "@arpinum/defender";
 
-import { basename } from './basename';
-import { ConsoleOut } from './console';
-import { Level, LevelConfiguration, levels, LogFunc } from './levels';
+import { basename } from "./basename";
+import { ConsoleOut } from "./console";
+import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
 
 export type GetDateString = () => string;
 
@@ -44,11 +44,11 @@ declare var process: {
 
 const defaultOptions = {
   level: (process.env.LOG_LEVEL as Level) || Level.info,
-  category: 'default',
-  filter: process.env.LOG_FILTER || '.*',
+  category: "default",
+  filter: process.env.LOG_FILTER || ".*",
   console,
   getDateString: () => new Date().toISOString(),
-  getLogInputs: getDefaultLogInputs
+  getLogInputs: getDefaultLogInputs,
 };
 
 export interface Logger {
@@ -68,7 +68,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   return createLoggingFunctions();
 
   function validateArgs() {
-    assert(options.level, 'level').toBeAString();
+    assert(options.level, "level").toBeAString();
     if (
       options.level !== undefined &&
       levels[options.level as Level] === undefined
@@ -79,18 +79,18 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
         )}]`
       );
     }
-    assert(options.category, 'options#category').toBeAString();
-    assert(options.filter, 'options#filter').toBeAString();
-    assert(options.fileName, 'options#fileName').toBeAString();
+    assert(options.category, "options#category").toBeAString();
+    assert(options.filter, "options#filter").toBeAString();
+    assert(options.fileName, "options#fileName").toBeAString();
     if (options.console !== undefined) {
-      assert(options.console.log, 'options#console#log').toBeAFunction();
-      assert(options.console.warn, 'options#console#warn').toBeAFunction();
-      assert(options.console.error, 'options#console#error').toBeAFunction();
+      assert(options.console.log, "options#console#log").toBeAFunction();
+      assert(options.console.warn, "options#console#warn").toBeAFunction();
+      assert(options.console.error, "options#console#error").toBeAFunction();
     }
     if (options.getDateString !== null) {
-      assert(options.getDateString, 'getDateString').toBeAFunction();
+      assert(options.getDateString, "getDateString").toBeAFunction();
     }
-    assert(options.getLogInputs, 'getLogInputs').toBeAFunction();
+    assert(options.getLogInputs, "getLogInputs").toBeAFunction();
   }
 
   function buildOptions(): ResolvedLoggerOptions {
@@ -107,7 +107,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
       return {};
     }
     return {
-      category: basename(options.fileName)
+      category: basename(options.fileName),
     };
   }
 
@@ -137,10 +137,10 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
       return (...args: any[]) => {
         const inputs = theOptions.getLogInputs({
           date:
-            theOptions.getDateString !== null ? theOptions.getDateString() : '',
+            theOptions.getDateString !== null ? theOptions.getDateString() : "",
           category: theOptions.category,
           level,
-          args
+          args,
         });
         logFunction(...inputs);
       };
@@ -151,6 +151,6 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
 
 function getDefaultLogInputs(log: CurrentLog): any[] {
   const { date, category, level, args } = log;
-  const datePart = date ? `${date} - ` : '';
+  const datePart = date ? `${date} - ` : "";
   return [`${datePart}${level}: [${category}]`].concat(args);
 }
