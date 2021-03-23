@@ -38,7 +38,7 @@ interface ProcessEnv {
   [key: string]: string | undefined;
 }
 
-declare var process: {
+declare let process: {
   env: ProcessEnv;
 };
 
