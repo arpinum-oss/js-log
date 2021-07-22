@@ -1,10 +1,20 @@
 # Changelog
 
-## 5.3.1 - UNRELEASED
+## 5.3.2 - UNRELEASED
 
 ### Fixed
 
 - Removing type dependency to node
+
+### Changed
+
+- Dependencies update
+
+## 5.3.1 - 2020-05-24
+
+### Added
+
+- More examples
 
 ### Changed
 
