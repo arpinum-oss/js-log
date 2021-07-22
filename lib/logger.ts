@@ -1,7 +1,7 @@
 import { assert } from "@arpinum/defender";
 
 import { basename } from "./basename";
-import { ConsoleOut } from "./console";
+import { ConsoleOut, Console } from "./console";
 import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
 
 export type GetDateString = () => string;

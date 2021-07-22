@@ -3,12 +3,12 @@ import { createLogger, LoggerOptions } from "./logger";
 
 const ConsoleSpy = jest.fn<Console, any>(
   () =>
-    (({
+    ({
       debug: jest.fn().mockReturnValue(undefined),
       log: jest.fn().mockReturnValue(undefined),
       error: jest.fn().mockReturnValue(undefined),
       warn: jest.fn().mockReturnValue(undefined),
-    } as any) as Console)
+    } as any as Console)
 );
 
 describe("Logger", () => {
