@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.3.2 - UNRELEASED
+## 5.3.2 - 2021-07-22
 
 ### Fixed
 
