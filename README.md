@@ -1,4 +1,4 @@
-# @arpinum/log [![Build Status](https://travis-ci.org/arpinum-oss/js-log.svg?branch=master)](https://travis-ci.org/arpinum-oss/js-log)
+# @arpinum/log [![Build Status](https://github.com/arpinum-oss/js-log/workflows/CI/badge.svg)](https://github.com/arpinum-oss/js-log/actions?query=workflow%3ACI)
 
 > We are drowning in information but starved for knowledge.  
 > <cite>John Naisbitt</cite>
