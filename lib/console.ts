@@ -1,4 +1,4 @@
-export type ConsoleOut = (...args: any[]) => void;
+export type ConsoleOut = (...args: unknown[]) => void;
 
 export interface Console {
   debug?: ConsoleOut;
@@ -6,3 +6,5 @@ export interface Console {
   warn?: ConsoleOut;
   error?: ConsoleOut;
 }
+
+export type ConsoleMethod = keyof Console;

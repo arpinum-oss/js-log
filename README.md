@@ -13,10 +13,10 @@ npm install @arpinum/log --save
 
 ## Default logger
 
-Just require default logger and start yelling messages:
+Just import default logger and start yelling messages:
 
-```javascript
-const { logger } = require("@arpinum/log");
+```ts
+import { logger } from "@arpinum/log";
 
 logger.info("Something happened");
 ```
@@ -36,14 +36,15 @@ Available methods are:
 - warn
 - error
 
-Each level uses corresponding method on `console` global object and fallback to `console.log` if missing for runtime environment.
+Each level uses corresponding method on `console` global object and fallback to `console.log` if missing for runtime
+environment.
 
 ## Custom logger
 
 You can create a fine tuned logger:
 
-```javascript
-const { createLogger } = require("@arpinum/log");
+```ts
+import { createLogger } from "@arpinum/log";
 
 const logger = createLogger({ level: "error" });
 logger.info("Something happened");
@@ -84,11 +85,12 @@ You can pass those options during logger creation:
 
 ### Filtering logs
 
-If you have multiple logger instances with various categories, you can filter logs using `filter` options or `LOG_FILTER` env var.
+If you have multiple logger instances with various categories, you can filter logs using `filter` options
+or `LOG_FILTER` env var.
 
 Example:
 
-```javascript
+```ts
 // program.js
 const mainLogger = createLogger({ category: "main" });
 const serviceLogger = createLogger({ category: "service" });
@@ -107,8 +109,8 @@ May be run with `LOG_FILTER=serv node program.js` to output:
 
 File name usage:
 
-```javascript
-const { createLogger } = require("@arpinum/log");
+```ts
+import { createLogger } from "@arpinum/log";
 
 const logger = createLogger({ fileName: __filename });
 logger.info("Something happened");
@@ -131,7 +133,7 @@ Which outputs :
 
 Example:
 
-```javascript
+```ts
 const logger = createLogger({
   getLogInputs: ({ date, category, level, args }) => [
     `${date}|${category}|${level}`,

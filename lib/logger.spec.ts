@@ -1,21 +1,22 @@
 import { Level } from "./levels";
-import { createLogger, LoggerOptions } from "./logger";
-
-const ConsoleSpy = jest.fn<Console, any>(
-  () =>
-    ({
-      debug: jest.fn().mockReturnValue(undefined),
-      log: jest.fn().mockReturnValue(undefined),
-      error: jest.fn().mockReturnValue(undefined),
-      warn: jest.fn().mockReturnValue(undefined),
-    } as any as Console)
-);
+import {
+  createLogger,
+  GetDateString,
+  GetLogInputs,
+  LoggerOptions,
+} from "./logger";
+import { ConsoleMethod } from "./console";
 
 describe("Logger", () => {
   let consoleSpy: Console;
 
   beforeEach(() => {
-    consoleSpy = new ConsoleSpy();
+    consoleSpy = createMock<Console>({
+      debug: jest.fn().mockReturnValue(undefined),
+      log: jest.fn().mockReturnValue(undefined),
+      error: jest.fn().mockReturnValue(undefined),
+      warn: jest.fn().mockReturnValue(undefined),
+    });
   });
 
   it("should log with console.debug for debug level", () => {
@@ -23,7 +24,7 @@ describe("Logger", () => {
 
     logger.debug("the message");
 
-    assertLoggedWithLevelAndMessage("debug", "the message");
+    assertLoggedWithMethodAndMessage("debug", "the message");
   });
 
   it("should fallback to console.log if no console.debug", () => {
@@ -33,7 +34,7 @@ describe("Logger", () => {
 
     logger.debug("the message");
 
-    assertLoggedWithLevelAndMessage("log", "the message");
+    assertLoggedWithMethodAndMessage("log", "the message");
   });
 
   it("should log with console.log for info level", () => {
@@ -41,7 +42,7 @@ describe("Logger", () => {
 
     logger.info("the message");
 
-    assertLoggedWithLevelAndMessage("log", "the message");
+    assertLoggedWithMethodAndMessage("log", "the message");
   });
 
   it("should log with console.warn for warn level", () => {
@@ -49,7 +50,7 @@ describe("Logger", () => {
 
     logger.warn("the message");
 
-    assertLoggedWithLevelAndMessage("warn", "the message");
+    assertLoggedWithMethodAndMessage("warn", "the message");
   });
 
   it("should fallback to console.log if no console.warn", () => {
@@ -59,7 +60,7 @@ describe("Logger", () => {
 
     logger.warn("the message");
 
-    assertLoggedWithLevelAndMessage("log", "the message");
+    assertLoggedWithMethodAndMessage("log", "the message");
   });
 
   it("should log with console.error for error level", () => {
@@ -67,7 +68,7 @@ describe("Logger", () => {
 
     logger.error("the message");
 
-    assertLoggedWithLevelAndMessage("error", "the message");
+    assertLoggedWithMethodAndMessage("error", "the message");
   });
 
   it("should fallback to console.log if no console.error", () => {
@@ -77,7 +78,7 @@ describe("Logger", () => {
 
     logger.error("the message");
 
-    assertLoggedWithLevelAndMessage("log", "the message");
+    assertLoggedWithMethodAndMessage("log", "the message");
   });
 
   it("should log if logger priority is greater than given one", () => {
@@ -85,7 +86,7 @@ describe("Logger", () => {
 
     logger.error("the message");
 
-    assertLoggedWithLevelAndMessage("error", "the message");
+    assertLoggedWithMethodAndMessage("error", "the message");
   });
 
   it("won't log if logger priority is smaller than given one", () => {
@@ -197,11 +198,11 @@ describe("Logger", () => {
 
     logger.info("the message");
 
-    assertLoggedWithLevelAndMessage("log", "the message");
+    assertLoggedWithMethodAndMessage("log", "the message");
   });
 
   it("won't be created with level not a string", () => {
-    const creation = () => create({ level: 3 as any });
+    const creation = () => create({ level: 3 as any as Level });
 
     expect(creation).toThrow("level must be a string");
   });
@@ -213,19 +214,20 @@ describe("Logger", () => {
   });
 
   it("won't be created with category not a string", () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const creation = () => create({ category: 3 as any });
 
     expect(creation).toThrow("category must be a string");
   });
 
   it("won't be created with filter not a string", () => {
-    const creation = () => create({ filter: 3 as any });
+    const creation = () => create({ filter: 3 as any as string });
 
     expect(creation).toThrow("filter must be a string");
   });
 
   it("won't be created with fileName not a string", () => {
-    const creation = () => create({ fileName: 3 as any });
+    const creation = () => create({ fileName: 3 as any as string });
 
     expect(creation).toThrow("fileName must be a string");
   });
@@ -252,13 +254,13 @@ describe("Logger", () => {
   });
 
   it("won't be created with getDateString not a function", () => {
-    const creation = () => create({ getDateString: 3 as any });
+    const creation = () => create({ getDateString: 3 as any as GetDateString });
 
     expect(creation).toThrow("getDateString must be a function");
   });
 
   it("won't be created with getLogInputs not a function", () => {
-    const creation = () => create({ getLogInputs: 3 as any });
+    const creation = () => create({ getLogInputs: 3 as any as GetLogInputs });
 
     expect(creation).toThrow("getLogInputs must be a function");
   });
@@ -275,13 +277,24 @@ describe("Logger", () => {
     );
   }
 
-  function assertLoggedWithLevelAndMessage(level: string, message: string) {
-    expect((consoleSpy as any)[level]).toHaveBeenCalled();
-    expect((consoleSpy as any)[level].mock.calls[0][1]).toContain(message);
+  function assertLoggedWithMethodAndMessage(
+    method: ConsoleMethod,
+    message: string
+  ) {
+    expect(consoleSpy[method]).toHaveBeenCalledWith(
+      expect.any(String),
+      message
+    );
   }
 
   function assertLoggedPrefixIncludes(prefix: string) {
-    expect(consoleSpy.log).toHaveBeenCalled();
-    expect((consoleSpy as any).log.mock.calls[0][0]).toContain(prefix);
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+      expect.stringContaining(prefix),
+      expect.any(String)
+    );
   }
 });
+
+export function createMock<T>(properties: Partial<T> = {}): T {
+  return properties as T;
+}

@@ -10,10 +10,10 @@ interface CurrentLog {
   date: string;
   category: string;
   level: string;
-  args: any[];
+  args: unknown[];
 }
 
-export type GetLogInputs = (log: CurrentLog) => any[];
+export type GetLogInputs = (log: CurrentLog) => unknown[];
 
 export interface LoggerOptions {
   level?: Level | string;
@@ -73,10 +73,9 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
       options.level !== undefined &&
       levels[options.level as Level] === undefined
     ) {
+      const levelList = Object.keys(levels).join(",");
       throw new Error(
-        `level ${options.level} is invalid, pick one in [${Object.keys(
-          levels
-        )}]`
+        `level ${options.level} is invalid, pick one in [${levelList}]`
       );
     }
     assert(options.category, "options#category").toBeAString();
@@ -134,7 +133,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   ): ConsoleOut {
     if (configuredLevel.priority <= configuration.priority && allowedToLog) {
       const logFunction = (configuration.log as LogFunc)(theOptions.console);
-      return (...args: any[]) => {
+      return (...args: unknown[]) => {
         const inputs = theOptions.getLogInputs({
           date:
             theOptions.getDateString !== null ? theOptions.getDateString() : "",
@@ -149,8 +148,8 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   }
 };
 
-function getDefaultLogInputs(log: CurrentLog): any[] {
+function getDefaultLogInputs(log: CurrentLog): unknown[] {
   const { date, category, level, args } = log;
   const datePart = date ? `${date} - ` : "";
-  return [`${datePart}${level}: [${category}]`].concat(args);
+  return [`${datePart}${level}: [${category}]`, ...args];
 }
