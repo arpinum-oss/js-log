@@ -6,7 +6,7 @@ import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
 
 export type GetDateString = () => string;
 
-interface CurrentLog {
+export interface CurrentLog {
   date: string;
   category: string;
   level: string;
