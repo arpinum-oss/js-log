@@ -1,4 +1,4 @@
-// run with: LOG_FILTER=serv ts-node filter.ts
+// run with: ARP_LOG_FILTER=serv ts-node filter.ts
 
 import { createLogger } from "../lib";
 

@@ -43,9 +43,9 @@ declare let process: {
 };
 
 const defaultOptions = {
-  level: (process.env.LOG_LEVEL as Level) || Level.info,
+  level: (process.env.ARP_LOG_LEVEL as Level) || Level.info,
   category: "default",
-  filter: process.env.LOG_FILTER || ".*",
+  filter: process.env.ARP_LOG_FILTER || ".*",
   console,
   getDateString: () => new Date().toISOString(),
   getLogInputs: getDefaultLogInputs,

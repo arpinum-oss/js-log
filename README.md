@@ -64,7 +64,7 @@ You can pass those options during logger creation:
 - level
   - minimum logging level amongst `all`, `debug`, `info`, `warn`, `error`, `off`
   - default is `info`
-  - `LOG_LEVEL` env var may be used to set level
+  - `ARP_LOG_LEVEL` env var may be used to set level
 - category
   - the category displayed in message, useful to filter logs
   - default is `default`
@@ -73,7 +73,7 @@ You can pass those options during logger creation:
 - filter
   - a regex to filter matching categories
   - default is `.*` (open bar)
-  - `LOG_FILTER` env var may be used to set filter
+  - `ARP_LOG_FILTER` env var may be used to set filter
 - getDateString
   - a function to get a formatted date
   - default function returns `new Date().toISOString()`
@@ -86,7 +86,7 @@ You can pass those options during logger creation:
 ### Filtering logs
 
 If you have multiple logger instances with various categories, you can filter logs using `filter` options
-or `LOG_FILTER` env var.
+or `ARP_LOG_FILTER` env var.
 
 Example:
 
