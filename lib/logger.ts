@@ -1,7 +1,7 @@
 import { assert } from "@arpinum/defender";
 
 import { basename } from "./basename";
-import { ConsoleOut, Console } from "./console";
+import { Console, ConsoleOut } from "./console";
 import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
 
 export type GetDateString = () => string;
@@ -34,9 +34,7 @@ interface ResolvedLoggerOptions {
   getLogInputs: GetLogInputs;
 }
 
-interface ProcessEnv {
-  [key: string]: string | undefined;
-}
+type ProcessEnv = Record<string, string | undefined>;
 
 declare let process: {
   env: ProcessEnv;
