@@ -140,7 +140,7 @@ describe("Logger", () => {
 
     expect(consoleSpy.log).toHaveBeenCalledWith(
       "today - info: [awesome]",
-      "the message"
+      "the message",
     );
   });
 
@@ -159,7 +159,7 @@ describe("Logger", () => {
     expect(consoleSpy.log).toHaveBeenCalledWith(
       "today|awesome|info",
       "the",
-      "message"
+      "message",
     );
   });
 
@@ -173,7 +173,7 @@ describe("Logger", () => {
 
     expect(consoleSpy.log).toHaveBeenCalledWith(
       "info: [awesome]",
-      "the message"
+      "the message",
     );
   });
 
@@ -272,25 +272,25 @@ describe("Logger", () => {
           level: Level.all,
           console: consoleSpy,
         },
-        options
-      )
+        options,
+      ),
     );
   }
 
   function assertLoggedWithMethodAndMessage(
     method: ConsoleMethod,
-    message: string
+    message: string,
   ) {
     expect(consoleSpy[method]).toHaveBeenCalledWith(
       expect.any(String),
-      message
+      message,
     );
   }
 
   function assertLoggedPrefixIncludes(prefix: string) {
     expect(consoleSpy.log).toHaveBeenCalledWith(
       expect.stringContaining(prefix),
-      expect.any(String)
+      expect.any(String),
     );
   }
 });

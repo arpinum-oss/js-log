@@ -41,9 +41,9 @@ declare let process: {
 };
 
 const defaultOptions = {
-  level: (process?.env?.ARP_LOG_LEVEL as Level) || Level.info,
+  level: getDefaultLevel(),
   category: "default",
-  filter: process?.env?.ARP_LOG_FILTER || ".*",
+  filter: getDefaultFilter(),
   console,
   getDateString: () => new Date().toISOString(),
   getLogInputs: getDefaultLogInputs,
@@ -150,4 +150,22 @@ function getDefaultLogInputs(log: CurrentLog): unknown[] {
   const { date, category, level, args } = log;
   const datePart = date ? `${date} - ` : "";
   return [`${datePart}${level}: [${category}]`, ...args];
+}
+
+function getDefaultLevel() {
+  const fallback = Level.info;
+  try {
+    return (process.env.ARP_LOG_LEVEL as Level) || fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function getDefaultFilter() {
+  const fallback = ".*";
+  try {
+    return process.env.ARP_LOG_FILTER || fallback;
+  } catch (e) {
+    return fallback;
+  }
 }
