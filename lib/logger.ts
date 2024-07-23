@@ -41,9 +41,9 @@ declare let process: {
 };
 
 const defaultOptions = {
-  level: (process.env.ARP_LOG_LEVEL as Level) || Level.info,
+  level: (process?.env?.ARP_LOG_LEVEL as Level) || Level.info,
   category: "default",
-  filter: process.env.ARP_LOG_FILTER || ".*",
+  filter: process?.env?.ARP_LOG_FILTER || ".*",
   console,
   getDateString: () => new Date().toISOString(),
   getLogInputs: getDefaultLogInputs,
@@ -73,7 +73,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
     ) {
       const levelList = Object.keys(levels).join(",");
       throw new Error(
-        `level ${options.level} is invalid, pick one in [${levelList}]`
+        `level ${options.level} is invalid, pick one in [${levelList}]`,
       );
     }
     assert(options.category, "options#category").toBeAString();
@@ -95,7 +95,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
       {},
       defaultOptions,
       options,
-      maybeWithCategoryFromFileName()
+      maybeWithCategoryFromFileName(),
     );
   }
 
@@ -119,15 +119,15 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
           result,
           configuration.log
             ? { [level]: createLoggingFunction(level, configuration) }
-            : {}
+            : {},
         ),
-      {} as Logger
+      {} as Logger,
     );
   }
 
   function createLoggingFunction(
     level: string,
-    configuration: LevelConfiguration
+    configuration: LevelConfiguration,
   ): ConsoleOut {
     if (configuredLevel.priority <= configuration.priority && allowedToLog) {
       const logFunction = (configuration.log as LogFunc)(theOptions.console);
