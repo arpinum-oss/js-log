@@ -155,6 +155,7 @@ function getDefaultLevel() {
   const fallback = Level.info;
   try {
     return (process.env.ARP_LOG_LEVEL as Level) || fallback;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return fallback;
   }
@@ -164,6 +165,7 @@ function getDefaultFilter() {
   const fallback = ".*";
   try {
     return process.env.ARP_LOG_FILTER || fallback;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return fallback;
   }

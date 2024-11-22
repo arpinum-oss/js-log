@@ -214,7 +214,6 @@ describe("Logger", () => {
   });
 
   it("won't be created with category not a string", () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const creation = () => create({ category: 3 as any });
 
     expect(creation).toThrow("category must be a string");

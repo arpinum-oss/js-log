@@ -2,9 +2,7 @@ import { Console, ConsoleOut } from "./console";
 
 export type LogFunc = (console: Console) => ConsoleOut;
 
-export type Levels = {
-  [key in Level]: LevelConfiguration;
-};
+export type Levels = Record<Level, LevelConfiguration>;
 
 export enum Level {
   all = "all",
