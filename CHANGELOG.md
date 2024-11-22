@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Using custom code instead of library for type assertions
+- Dependencies update
 
 ## 6.1.1 - 2024-07-23
 
