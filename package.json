@@ -41,9 +41,6 @@
     "typescript": "^5.4.3",
     "typescript-eslint": "^7.5.0"
   },
-  "dependencies": {
-    "@arpinum/defender": "^1.0.7"
-  },
   "jest": {
     "preset": "ts-jest"
   },

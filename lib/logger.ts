@@ -1,5 +1,4 @@
-import { assert } from "@arpinum/defender";
-
+import { assertOptionalFunction, assertOptionalString } from "./asserts";
 import { basename } from "./basename";
 import { Console, ConsoleOut } from "./console";
 import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
@@ -66,7 +65,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   return createLoggingFunctions();
 
   function validateArgs() {
-    assert(options.level, "level").toBeAString();
+    assertOptionalString(options.level, "level");
     if (
       options.level !== undefined &&
       levels[options.level as Level] === undefined
@@ -76,18 +75,18 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
         `level ${options.level} is invalid, pick one in [${levelList}]`,
       );
     }
-    assert(options.category, "options#category").toBeAString();
-    assert(options.filter, "options#filter").toBeAString();
-    assert(options.fileName, "options#fileName").toBeAString();
+    assertOptionalString(options.category, "options#category");
+    assertOptionalString(options.filter, "options#filter");
+    assertOptionalString(options.fileName, "options#fileName");
     if (options.console !== undefined) {
-      assert(options.console.log, "options#console#log").toBeAFunction();
-      assert(options.console.warn, "options#console#warn").toBeAFunction();
-      assert(options.console.error, "options#console#error").toBeAFunction();
+      assertOptionalFunction(options.console.log, "options#console#log");
+      assertOptionalFunction(options.console.warn, "options#console#warn");
+      assertOptionalFunction(options.console.error, "options#console#error");
     }
     if (options.getDateString !== null) {
-      assert(options.getDateString, "getDateString").toBeAFunction();
+      assertOptionalFunction(options.getDateString, "getDateString");
     }
-    assert(options.getLogInputs, "getLogInputs").toBeAFunction();
+    assertOptionalFunction(options.getLogInputs, "getLogInputs");
   }
 
   function buildOptions(): ResolvedLoggerOptions {
