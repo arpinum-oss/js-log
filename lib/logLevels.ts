@@ -2,9 +2,7 @@ import { Console, ConsoleOut } from "./console";
 
 export type LogFunc = (console: Console) => ConsoleOut;
 
-export type Levels = Record<Level, LevelConfiguration>;
-
-export enum Level {
+export enum LogLevel {
   all = "all",
   debug = "debug",
   info = "info",
@@ -13,28 +11,28 @@ export enum Level {
   off = "off",
 }
 
-export interface LevelConfiguration {
+export interface LogLevelConfiguration {
   priority: number;
   log?: LogFunc;
 }
 
-export const levels: Levels = {
-  [Level.all]: {
+export const logLevels: Record<LogLevel, LogLevelConfiguration> = {
+  [LogLevel.all]: {
     priority: 1,
   },
-  [Level.debug]: {
+  [LogLevel.debug]: {
     priority: 2,
     log: (console) => console.debug || console.log,
   },
-  [Level.info]: {
+  [LogLevel.info]: {
     priority: 3,
     log: (console) => console.log,
   },
-  [Level.warn]: {
+  [LogLevel.warn]: {
     priority: 4,
     log: (console) => console.warn || console.log,
   },
-  [Level.error]: {
+  [LogLevel.error]: {
     priority: 5,
     log: (console) => console.error || console.log,
   },

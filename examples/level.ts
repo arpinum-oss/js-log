@@ -1,7 +1,7 @@
-import { createLogger, Level } from "../lib";
+import { createLogger, LogLevel } from "../lib";
 
 const logger = createLogger({
-  level: Level.info,
+  level: LogLevel.info,
   getDateString: null,
 });
 

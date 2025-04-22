@@ -1,4 +1,4 @@
-import { Level } from "./levels";
+import { LogLevel } from "./logLevels";
 import {
   createLogger,
   GetDateString,
@@ -82,7 +82,7 @@ describe("Logger", () => {
   });
 
   it("should log if logger priority is greater than given one", () => {
-    const logger = create({ level: Level.debug });
+    const logger = create({ level: LogLevel.debug });
 
     logger.error("the message");
 
@@ -90,7 +90,7 @@ describe("Logger", () => {
   });
 
   it("won't log if logger priority is smaller than given one", () => {
-    const logger = create({ level: Level.error });
+    const logger = create({ level: LogLevel.error });
 
     logger.debug("the message");
 
@@ -202,13 +202,13 @@ describe("Logger", () => {
   });
 
   it("won't be created with level not a string", () => {
-    const creation = () => create({ level: 3 as any as Level });
+    const creation = () => create({ level: 3 as any as LogLevel });
 
     expect(creation).toThrow("level must be a string");
   });
 
   it("won't be created with unknown log level", () => {
-    const creation = () => create({ level: "unknown" as Level });
+    const creation = () => create({ level: "unknown" as LogLevel });
 
     expect(creation).toThrow("level unknown is invalid");
   });
@@ -268,7 +268,7 @@ describe("Logger", () => {
     return createLogger(
       Object.assign(
         {
-          level: Level.all,
+          level: LogLevel.all,
           console: consoleSpy,
         },
         options,

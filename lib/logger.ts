@@ -1,7 +1,12 @@
 import { assertOptionalFunction, assertOptionalString } from "./asserts";
 import { basename } from "./basename";
 import { Console, ConsoleOut } from "./console";
-import { Level, LevelConfiguration, levels, LogFunc } from "./levels";
+import {
+  LogLevel,
+  LogLevelConfiguration,
+  logLevels,
+  LogFunc,
+} from "./logLevels";
 
 export type GetDateString = () => string;
 
@@ -15,7 +20,7 @@ export interface CurrentLog {
 export type GetLogInputs = (log: CurrentLog) => unknown[];
 
 export interface LoggerOptions {
-  level?: Level | string;
+  level?: LogLevel | string;
   category?: string;
   fileName?: string;
   filter?: string;
@@ -25,7 +30,7 @@ export interface LoggerOptions {
 }
 
 interface ResolvedLoggerOptions {
-  level: Level;
+  level: LogLevel;
   category: string;
   filter: string;
   console: Console;
@@ -60,7 +65,7 @@ export type CreateLogger = (options?: LoggerOptions) => Logger;
 export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   validateArgs();
   const theOptions = buildOptions();
-  const configuredLevel = levels[theOptions.level];
+  const configuredLevel = logLevels[theOptions.level];
   const allowedToLog = filterMatchesCategory();
   return createLoggingFunctions();
 
@@ -68,9 +73,9 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
     assertOptionalString(options.level, "level");
     if (
       options.level !== undefined &&
-      levels[options.level as Level] === undefined
+      logLevels[options.level as LogLevel] === undefined
     ) {
-      const levelList = Object.keys(levels).join(",");
+      const levelList = Object.keys(logLevels).join(",");
       throw new Error(
         `level ${options.level} is invalid, pick one in [${levelList}]`,
       );
@@ -112,7 +117,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
   }
 
   function createLoggingFunctions(): Logger {
-    return Object.entries(levels).reduce(
+    return Object.entries(logLevels).reduce(
       (result, [level, configuration]) =>
         Object.assign(
           result,
@@ -126,7 +131,7 @@ export const createLogger: CreateLogger = (options: LoggerOptions = {}) => {
 
   function createLoggingFunction(
     level: string,
-    configuration: LevelConfiguration,
+    configuration: LogLevelConfiguration,
   ): ConsoleOut {
     if (configuredLevel.priority <= configuration.priority && allowedToLog) {
       const logFunction = (configuration.log as LogFunc)(theOptions.console);
@@ -152,9 +157,9 @@ function getDefaultLogInputs(log: CurrentLog): unknown[] {
 }
 
 function getDefaultLevel() {
-  const fallback = Level.info;
+  const fallback = LogLevel.info;
   try {
-    return (process.env.ARP_LOG_LEVEL as Level) || fallback;
+    return (process.env.ARP_LOG_LEVEL as LogLevel) || fallback;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return fallback;
