@@ -1,3 +1,4 @@
+import { describe, it, expect } from "@jest/globals";
 import { assertOptionalFunction, assertOptionalString } from "./asserts";
 
 describe("Asserts module", () => {
