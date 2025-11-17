@@ -10,3 +10,5 @@ export {
 import { createLogger, Logger } from "./logger";
 
 export const logger: Logger = createLogger();
+
+export { CreateLogger } from "./logger";
